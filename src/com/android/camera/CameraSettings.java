@@ -27,7 +27,10 @@ import android.media.CamcorderProfile;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  *  Provides utilities and keys for Camera settings.
@@ -49,6 +52,13 @@ public class CameraSettings {
     public static final String KEY_SCENE_MODE = "pref_camera_scenemode_key";
     public static final String KEY_EXPOSURE = "pref_camera_exposure_key";
     public static final String KEY_CAMERA_ID = "pref_camera_id_key";
+    public static final String KEY_ISO = "pref_camera_iso_key";
+    public static final String KEY_LENSSHADING = "pref_camera_lensshading_key";
+    public static final String KEY_AUTOEXPOSURE = "pref_camera_autoexposure_key";
+    public static final String KEY_ANTIBANDING = "pref_camera_antibanding_key";
+    public static final String KEY_SHARPNESS = "pref_camera_sharpness_key";
+    public static final String KEY_CONTRAST = "pref_camera_contrast_key";
+    public static final String KEY_SATURATION = "pref_camera_saturation_key";
 
     private static final String VIDEO_QUALITY_HD = "hd";
     private static final String VIDEO_QUALITY_HIGH = "high";
@@ -145,6 +155,11 @@ public class CameraSettings {
                 (IconListPreference)group.findPreference(KEY_CAMERA_ID);
         ListPreference videoFlashMode =
                 group.findPreference(KEY_VIDEOCAMERA_FLASH_MODE);
+        ListPreference mIso = group.findPreference(KEY_ISO);
+        ListPreference lensShade = group.findPreference(KEY_LENSSHADING);
+        ListPreference antiBanding = group.findPreference(KEY_ANTIBANDING);
+        ListPreference autoExposure = group.findPreference(KEY_AUTOEXPOSURE);
+
 
         // Since the screen could be loaded from different resources, we need
         // to check if the preference is available here
@@ -183,8 +198,16 @@ public class CameraSettings {
                     whiteBalance, mParameters.getSupportedWhiteBalance());
         }
         if (colorEffect != null) {
-            filterUnsupportedOptions(group,
-                    colorEffect, mParameters.getSupportedColorEffects());
+            if (isFrontFacingCamera()) {
+                String supportedEffects = mContext.getResources().getString(R.string.ffc_supportedEffects);
+                if (supportedEffects != null && supportedEffects.length() > 0) {
+                    filterUnsupportedOptions(group, colorEffect,
+                            Arrays.asList(supportedEffects.split(",")));
+                }
+            } else {
+                filterUnsupportedOptions(group,
+                        colorEffect, mParameters.getSupportedColorEffects());
+            }
         }
         if (sceneMode != null) {
             filterUnsupportedOptions(group,
@@ -195,8 +218,12 @@ public class CameraSettings {
                     flashMode, mParameters.getSupportedFlashModes());
         }
         if (focusMode != null) {
-            filterUnsupportedOptions(group,
-                    focusMode, mParameters.getSupportedFocusModes());
+            if (isFrontFacingCamera() && !mContext.getResources().getBoolean(R.bool.ffc_canFocus)) {
+                filterUnsupportedOptions(group, focusMode, new ArrayList<String>());
+            } else {
+                filterUnsupportedOptions(group,
+                        focusMode, mParameters.getSupportedFocusModes());
+            }
         }
         if (videoFlashMode != null) {
             filterUnsupportedOptions(group,
@@ -204,6 +231,22 @@ public class CameraSettings {
         }
         if (exposure != null) buildExposureCompensation(group, exposure);
         if (cameraId != null) buildCameraId(group, cameraId);
+        if (mIso != null) {
+            filterUnsupportedOptions(group,
+                    mIso, mParameters.getSupportedIsoValues());
+        }
+        if (lensShade!= null) {
+            filterUnsupportedOptions(group,
+                    lensShade, mParameters.getSupportedLensShadeModes());
+        }
+         if (antiBanding != null) {
+             filterUnsupportedOptions(group,
+                     antiBanding, mParameters.getSupportedAntibanding());
+         }
+         if (autoExposure != null) {
+             filterUnsupportedOptions(group,
+                     autoExposure, mParameters.getSupportedAutoexposure());
+         }
     }
 
     private void buildExposureCompensation(
@@ -419,5 +462,20 @@ public class CameraSettings {
         Editor editor = pref.edit();
         editor.putString(KEY_CAMERA_ID, Integer.toString(cameraId));
         editor.apply();
+    }
+
+    public static boolean isZoomSupported(Context context, int cameraId) {
+        return CameraHolder.instance().getCameraInfo()[cameraId].facing != CameraInfo.CAMERA_FACING_FRONT
+                || context.getResources().getBoolean(R.bool.ffc_canZoom);
+    }
+
+    public static void dumpParameters(Parameters params) {
+        Set<String> sortedParams = new TreeSet<String>();
+        sortedParams.addAll(Arrays.asList(params.flatten().split(";")));
+        Log.d(TAG, "Parameters: " + sortedParams.toString());
+    }
+
+    private boolean isFrontFacingCamera() {
+        return mCameraInfo[mCameraId].facing == CameraInfo.CAMERA_FACING_FRONT;
     }
 }

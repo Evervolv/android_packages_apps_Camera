@@ -124,14 +124,16 @@
     <!-- Camera Preferences focus mode dialog box entries -->
     <string-array name="pref_camera_focusmode_entries" translatable="false">
         <item>@string/pref_camera_focusmode_entry_auto</item>
-        <item>@string/pref_camera_focusmode_entry_infinity</item>
+        <item>@string/pref_camera_focusmode_entry_normal</item>
         <item>@string/pref_camera_focusmode_entry_macro</item>
+        <item>@string/pref_camera_focusmode_entry_infinity</item>
     </string-array>
 
     <string-array name="pref_camera_focusmode_entryvalues" translatable="false">
         <item>auto</item>
-        <item>infinity</item>
+        <item>normal</item>
         <item>macro</item>
+        <item>infinity</item>
     </string-array>
 
     <!-- Camera Preferences flash mode dialog box entries -->
@@ -264,6 +266,47 @@
         <item>green-tint</item>
     </string-array>
 
+    <!-- Camera Preferences MultiLevel dialog box entries -->
+    <string-array name="pref_camera_sharpness_entries">
+        <item>@string/pref_camera_sharpness_entry_level0</item>
+        <item>@string/pref_camera_sharpness_entry_level1</item>
+        <item>@string/pref_camera_sharpness_entry_level2</item>
+        <item>@string/pref_camera_sharpness_entry_level3</item>
+        <item>@string/pref_camera_sharpness_entry_level4</item>
+        <item>@string/pref_camera_sharpness_entry_level5</item>
+    </string-array>
+
+    <!-- Camera Preferences MultiLevel dialog box entries -->
+    <string-array name="pref_camera_contrast_entries">
+        <item>@string/pref_camera_contrast_entry_level0</item>
+        <item>@string/pref_camera_contrast_entry_level1</item>
+        <item>@string/pref_camera_contrast_entry_level2</item>
+        <item>@string/pref_camera_contrast_entry_level3</item>
+        <item>@string/pref_camera_contrast_entry_level4</item>
+        <item>@string/pref_camera_contrast_entry_level5</item>
+    </string-array>
+
+    <!-- Camera Preferences Saturation dialog box entries -->
+    <string-array name="pref_camera_saturation_entries">
+        <item>@string/pref_camera_saturation_entry_level0</item>
+        <item>@string/pref_camera_saturation_entry_level1</item>
+        <item>@string/pref_camera_saturation_entry_level2</item>
+        <item>@string/pref_camera_saturation_entry_level3</item>
+        <item>@string/pref_camera_saturation_entry_level4</item>
+        <item>@string/pref_camera_saturation_entry_level5</item>
+    </string-array>
+
+    <!-- Entry values array is shared between Saturation, Sharpness & Contrast -->
+    <string-array name="pref_camera_multilevel_entryvalues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+
     <!-- Camera Preferences Scene Mode dialog box entries -->
     <string-array name="pref_camera_scenemode_entries" translatable="false">
         <item>@string/pref_camera_scenemode_entry_auto</item>
@@ -278,8 +321,11 @@
         <item>@string/pref_camera_scenemode_entry_sunset</item>
         <item>@string/pref_camera_scenemode_entry_steadyphoto</item>
         <item>@string/pref_camera_scenemode_entry_fireworks</item>
+        <item>@string/pref_camera_scenemode_entry_sports</item>
         <item>@string/pref_camera_scenemode_entry_party</item>
         <item>@string/pref_camera_scenemode_entry_candlelight</item>
+        <item>@string/pref_camera_scenemode_entry_backlight</item>
+        <item>@string/pref_camera_scenemode_entry_flowers</item>
     </string-array>
 
     <string-array name="pref_camera_scenemode_entryvalues" translatable="false">
@@ -295,7 +341,72 @@
         <item>sunset</item>
         <item>steadyphoto</item>
         <item>fireworks</item>
+        <item>sports</item>
         <item>party</item>
         <item>candlelight</item>
+        <item>backlight</item>
+        <item>flowers</item>
     </string-array>
+
+    <!-- Camera Preferences ISO dialog box entries -->
+     <string-array name="pref_camera_iso_entries">
+         <item>@string/pref_camera_iso_entry_auto</item>
+         <item>@string/pref_camera_iso_entry_isodeblur</item>
+         <item>@string/pref_camera_iso_entry_iso100</item>
+         <item>@string/pref_camera_iso_entry_iso200</item>
+         <item>@string/pref_camera_iso_entry_iso400</item>
+         <item>@string/pref_camera_iso_entry_iso800</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="pref_camera_iso_entryvalues">
+         <item>@string/pref_camera_iso_value_auto</item>
+         <item>@string/pref_camera_iso_value_isodeblur</item>
+         <item>@string/pref_camera_iso_value_iso100</item>
+         <item>@string/pref_camera_iso_value_iso200</item>
+         <item>@string/pref_camera_iso_value_iso400</item>
+         <item>@string/pref_camera_iso_value_iso800</item>
+     </string-array>
+
+     <!-- Camera Preferences Lens shading dialog box entries -->
+     <string-array name="pref_camera_lensshading_entries">
+          <item>@string/pref_camera_lensshading_entry_enable</item>
+          <item>@string/pref_camera_lensshading_entry_disable</item>
+     </string-array>
+
+     <!-- Do not localize entryvalues -->
+     <string-array name="pref_camera_lensshading_entryvalues">
+          <item>@string/pref_camera_lensshading_value_enable</item>
+          <item>@string/pref_camera_lensshading_value_disable</item>
+     </string-array>
+
+     <!-- Camera Preferences Anti Banding dialog box entries -->
+     <string-array name="pref_camera_antibanding_entries">
+         <item>@string/pref_camera_antibanding_entry_0</item>
+         <item>@string/pref_camera_antibanding_entry_1</item>
+         <item>@string/pref_camera_antibanding_entry_2</item>
+         <item>@string/pref_camera_antibanding_entry_3</item>
+     </string-array>
+
+     <string-array name="pref_camera_antibanding_entryvalues">
+         <item>off</item>
+         <item>50hz</item>
+         <item>60hz</item>
+         <item>auto</item>
+     </string-array>
+
+     <!-- Camera Preferences Auto Exposure dialog box entries -->
+     <string-array name="pref_camera_autoexposure_entries">
+         <item>@string/pref_camera_autoexposure_entry_frameaverage</item>
+         <item>@string/pref_camera_autoexposure_entry_centerweighted</item>
+         <item>@string/pref_camera_autoexposure_entry_spotmetering</item>
+     </string-array>
+
+     <!-- Do not localize entryvalues -->
+     <string-array name="pref_camera_autoexposure_entryvalues">
+         <item>@string/pref_camera_autoexposure_value_frameaverage</item>
+         <item>@string/pref_camera_autoexposure_value_centerweighted</item>
+         <item>@string/pref_camera_autoexposure_value_spotmetering</item>
+     </string-array>
+
 </resources>

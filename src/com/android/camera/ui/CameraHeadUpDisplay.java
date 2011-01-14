@@ -57,7 +57,14 @@ public class CameraHeadUpDisplay extends HeadUpDisplay {
                 CameraSettings.KEY_SCENE_MODE,
                 CameraSettings.KEY_PICTURE_SIZE,
                 CameraSettings.KEY_JPEG_QUALITY,
-                CameraSettings.KEY_COLOR_EFFECT);
+                CameraSettings.KEY_COLOR_EFFECT,
+                CameraSettings.KEY_ISO,
+                CameraSettings.KEY_LENSSHADING,
+                CameraSettings.KEY_AUTOEXPOSURE,
+                CameraSettings.KEY_ANTIBANDING,
+                CameraSettings.KEY_SATURATION,
+                CameraSettings.KEY_CONTRAST,
+                CameraSettings.KEY_SHARPNESS);
 
         mOtherSettings = new OtherSettingsIndicator(context, prefs);
         mOtherSettings.setOnRestorePreferencesClickedRunner(new Runnable() {
@@ -93,17 +100,21 @@ public class CameraHeadUpDisplay extends HeadUpDisplay {
     public void setZoomListener(ZoomControllerListener listener) {
         // The rendering thread won't access listener variable, so we don't
         // need to do concurrency protection here
-        mZoomIndicator.setZoomListener(listener);
+        if (mZoomIndicator != null) {
+            mZoomIndicator.setZoomListener(listener);
+        }
     }
 
     public void setZoomIndex(int index) {
-        GLRootView root = getGLRootView();
-        if (root != null) {
-            synchronized (root) {
+        if (mZoomIndicator != null) {
+            GLRootView root = getGLRootView();
+            if (root != null) {
+                synchronized (root) {
+                    mZoomIndicator.setZoomIndex(index);
+                }
+            } else {
                 mZoomIndicator.setZoomIndex(index);
             }
-        } else {
-            mZoomIndicator.setZoomIndex(index);
         }
     }
 
