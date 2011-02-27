@@ -25,7 +25,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -117,7 +116,7 @@ public class Camera extends NoSearchActivity implements View.OnClickListener,
     // The reason why it is set to 0.7 is just because 1.0 is too bright.
     private static final float DEFAULT_CAMERA_BRIGHTNESS = 0.7f;
 
-    private static final int SCREEN_DELAY = 2 * 60 * 1000;
+    private static final int SCREEN_DELAY = 1000;
     private static final int FOCUS_BEEP_VOLUME = 100;
 
     private static final int ZOOM_STOPPED = 0;
@@ -861,7 +860,7 @@ public class Camera extends NoSearchActivity implements View.OnClickListener,
 
         public void onSnap() {
             // If we are already in the middle of taking a snapshot then ignore.
-            if (mPausing || mStatus == SNAPSHOT_IN_PROGRESS) {
+            if (mPausing || mStatus == SNAPSHOT_IN_PROGRESS || !mPreviewing) {
                 return;
             }
             mCaptureStartTime = System.currentTimeMillis();
@@ -1032,11 +1031,13 @@ public class Camera extends NoSearchActivity implements View.OnClickListener,
     private void initializeHeadUpDisplay() {
         CameraSettings settings = new CameraSettings(this, mInitialParams,
                 CameraHolder.instance().getCameraInfo(), mCameraId);
+
+        boolean zoomSupported = CameraSettings.isZoomSupported(this, mCameraId);
         mHeadUpDisplay.initialize(this,
                 settings.getPreferenceGroup(R.xml.camera_preferences),
-                CameraSettings.isZoomSupported(this, mCameraId) ? getZoomRatios() : null,
+                zoomSupported ? getZoomRatios() : null,
                 mOrientationCompensation);
-        if (mParameters.isZoomSupported()) {
+        if (zoomSupported) {
             mHeadUpDisplay.setZoomListener(new ZoomControllerListener() {
                 public void onZoomChanged(
                         int index, float ratio, boolean isMoving) {
@@ -1750,6 +1751,8 @@ public class Camera extends NoSearchActivity implements View.OnClickListener,
         */
         mParameters = mCameraDevice.getParameters();
         mZoomMax = mParameters.getMaxZoom();
+        CameraSettings.setVideoMode(mParameters, false);
+        mCameraDevice.setParameters(mParameters);
     }
 
     private void stopPreview() {

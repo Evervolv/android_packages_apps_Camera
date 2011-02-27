@@ -77,7 +77,7 @@ public class CameraSettings {
     private static final int DEFAULT_VIDEO_DURATION = 30 * 60; // 10 mins
 
     // MMS video length
-    public static final int DEFAULT_VIDEO_DURATION_VALUE = -1;
+    public static final int DEFAULT_VIDEO_DURATION_VALUE = 30;
 
     private static final String TAG = "CameraSettings";
 
@@ -190,8 +190,12 @@ public class CameraSettings {
 
         // Filter out unsupported settings / options
         if (pictureSize != null) {
-            filterUnsupportedOptions(group, pictureSize, sizeListToStringList(
-                    mParameters.getSupportedPictureSizes()));
+            final List<String> pictureSizes = sizeListToStringList(mParameters.getSupportedPictureSizes());
+            final String filteredSizes = mContext.getResources().getString(R.string.filtered_pictureSizes);
+            if (filteredSizes != null && filteredSizes.length() > 0) {
+                pictureSizes.removeAll(Arrays.asList(filteredSizes.split(",")));
+            }
+            filterUnsupportedOptions(group, pictureSize, pictureSizes);
         }
         if (whiteBalance != null) {
             filterUnsupportedOptions(group,
@@ -477,5 +481,44 @@ public class CameraSettings {
 
     private boolean isFrontFacingCamera() {
         return mCameraInfo[mCameraId].facing == CameraInfo.CAMERA_FACING_FRONT;
+    }
+
+    public static boolean isVideoZoomSupported(Context context, int cameraId, Parameters params) {
+        boolean ret = isZoomSupported(context, cameraId);
+        if (ret) {
+            // No zoom at 720P currently. Driver limitation?
+            Size size = params.getPreviewSize();
+            ret = !(size.width == 1280 && size.height == 720);
+        }
+        return ret;
+    }
+
+    /**
+     * Enable video mode for HTC cameras. This is needed for OV8810 sensors.
+     *
+     * @param params
+     * @param on
+     */
+    public static void setVideoMode(Parameters params, boolean on) {
+        if (isHtcCamera(params)) {
+            params.set("cam-mode", on ? "1" : "0");
+        }
+    }
+
+    /**
+     * Sets continuous-autofocus video mode on HTC cameras that support it.
+     *
+     * @param params
+     * @param on
+     */
+    public static void setContinuousAf(Parameters params, boolean on) {
+        if (isHtcCamera(params)) {
+            params.set("enable-caf", on ? "on" : "off");
+        }
+    }
+
+    // Hackish way to know if this is an HTC camera
+    private static boolean isHtcCamera(Parameters params) {
+        return params.get("taking-picture-zoom") != null;
     }
 }
