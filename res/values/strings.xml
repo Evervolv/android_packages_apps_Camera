@@ -139,8 +139,8 @@
     <string name="pref_video_quality_entry_high">High (30m)</string>
     <string name="pref_video_quality_entry_low">Low (30m)</string>
     <string name="pref_video_quality_entry_mms">MMS (Low, 30s)</string>
-    <string name="pref_video_quality_entry_youtubehd">YouTube (HD, 10m)</string>
-    <string name="pref_video_quality_entry_youtube">YouTube (High, 10m)</string>
+    <string name="pref_video_quality_entry_youtubehd">YouTube (HD, 15m)</string>
+    <string name="pref_video_quality_entry_youtube">YouTube (High, 15m)</string>
 
     <!-- Settings screen, Camera setting category title -->
     <string name="pref_camera_settings_category">Camera settings</string>
@@ -308,20 +308,11 @@
     <string name="pref_camera_saturation_entry_level4">Level 4</string>
     <string name="pref_camera_saturation_entry_level5">Level 5</string>
 
-    <!-- Default sharpness setting. Do not translate. -->
-    <string name="pref_camera_sharpness_default">2</string>
-
     <!-- Settings screen, Select sharpness title -->
     <string name="pref_camera_sharpness_title">Sharpness</string>
 
-    <!-- Default contrast setting. Do not translate. -->
-    <string name="pref_camera_contrast_default">3</string>
-
     <!-- Settings screen, Select contrast title -->
     <string name="pref_camera_contrast_title">Contrast</string>
-
-    <!-- Default saturation setting. Do not translate. -->
-    <string name="pref_camera_saturation_default">3</string>
 
     <!-- Settings screen, Select saturation title -->
     <string name="pref_camera_saturation_title">Saturation</string>

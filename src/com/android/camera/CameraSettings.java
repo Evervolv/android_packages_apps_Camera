@@ -73,8 +73,8 @@ public class CameraSettings {
 
     // max video duration in seconds for mms and youtube.
     private static final int MMS_VIDEO_DURATION = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW).duration;
-    private static final int YOUTUBE_VIDEO_DURATION = 10 * 60; // 10 mins
-    private static final int DEFAULT_VIDEO_DURATION = 30 * 60; // 10 mins
+    private static final int YOUTUBE_VIDEO_DURATION = 15 * 60; // 15 mins
+    private static final int DEFAULT_VIDEO_DURATION = 30 * 60; // 30 mins
 
     // MMS video length
     public static final int DEFAULT_VIDEO_DURATION_VALUE = 30;
@@ -155,7 +155,7 @@ public class CameraSettings {
                 (IconListPreference)group.findPreference(KEY_CAMERA_ID);
         ListPreference videoFlashMode =
                 group.findPreference(KEY_VIDEOCAMERA_FLASH_MODE);
-        ListPreference mIso = group.findPreference(KEY_ISO);
+        ListPreference iso = group.findPreference(KEY_ISO);
         ListPreference lensShade = group.findPreference(KEY_LENSSHADING);
         ListPreference antiBanding = group.findPreference(KEY_ANTIBANDING);
         ListPreference autoExposure = group.findPreference(KEY_AUTOEXPOSURE);
@@ -236,9 +236,9 @@ public class CameraSettings {
         }
         if (exposure != null) buildExposureCompensation(group, exposure);
         if (cameraId != null) buildCameraId(group, cameraId);
-        if (mIso != null) {
+        if (iso != null) {
             filterUnsupportedOptions(group,
-                    mIso, mParameters.getSupportedIsoValues());
+                    iso, mParameters.getSupportedIsoValues());
         }
         if (lensShade!= null) {
             filterUnsupportedOptions(group,
