@@ -678,9 +678,9 @@ public class PhotoModule
         }
     }
 
-    private class ZoomChangeListener implements ZoomRenderer.OnZoomChangedListener {
-        @Override
-        public void onZoomValueChanged(int index) {
+    private void processZoomValueChanged(int index) {
+        if (index >= 0 && index <= mZoomMax) {
+            mZoomRenderer.setZoom(index);
             // Not useful to change zoom value when the activity is paused.
             if (mPaused) return;
             mZoomValue = index;
@@ -692,6 +692,13 @@ public class PhotoModule
                 Parameters p = mCameraDevice.getParameters();
                 mZoomRenderer.setZoomValue(mZoomRatios.get(p.getZoom()));
             }
+        }
+    }
+
+    private class ZoomChangeListener implements ZoomRenderer.OnZoomChangedListener {
+        @Override
+        public void onZoomValueChanged(int index) {
+            processZoomValueChanged(index);
         }
 
         @Override
@@ -2033,6 +2040,18 @@ public class PhotoModule
                     onShutterButtonFocus(true);
                 }
                 return true;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                if (mParameters.isZoomSupported() && mZoomRenderer != null) {
+                    int index = mZoomValue + 1;
+                    processZoomValueChanged(index);
+                }
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                if (mParameters.isZoomSupported() && mZoomRenderer != null) {
+                    int index = mZoomValue - 1;
+                    processZoomValueChanged(index);
+                }
+                return true;
         }
         return false;
     }
@@ -2053,6 +2072,12 @@ public class PhotoModule
                     onShutterButtonClick();
                 }
                 return true;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                if (mParameters.isZoomSupported() && mZoomRenderer != null) {
+                    return true;
+                }
+                break;
         }
         return false;
     }
@@ -2367,6 +2392,11 @@ public class PhotoModule
             // Set focus mode.
             mFocusManager.overrideFocusMode(null);
             mParameters.setFocusMode(mFocusManager.getFocusMode());
+
+            // Set focus time.
+            mFocusManager.setFocusTime(Integer.valueOf(
+                    mPreferences.getString(CameraSettings.KEY_FOCUS_TIME,
+                    mActivity.getString(R.string.pref_camera_focustime_default))));
         } else {
             mFocusManager.overrideFocusMode(mParameters.getFocusMode());
         }
