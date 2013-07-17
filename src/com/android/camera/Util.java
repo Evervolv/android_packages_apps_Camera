@@ -148,6 +148,9 @@ public class Util {
     // Workaround for QC cameras with broken face detection on front camera
     private static boolean sNoFaceDetectOnFrontCamera;
 
+    // Aspect tolerance multiplier
+    private static int sToleranceMultiplier;
+
     private Util() {
     }
 
@@ -167,6 +170,7 @@ public class Util {
         sEnableZSL = context.getResources().getBoolean(R.bool.enableZSL);
         sNoFaceDetectOnFrontCamera = context.getResources().getBoolean(
                 R.bool.noFaceDetectOnFrontCamera);
+        sToleranceMultiplier = context.getResources().getInteger(R.integer.aspectToleranceMultiplier);
     }
 
     public static int dpToPixel(int dp) {
@@ -480,7 +484,7 @@ public class Util {
     public static Size getOptimalPreviewSize(Activity currentActivity,
             List<Size> sizes, double targetRatio) {
         // Use a very small tolerance because we want an exact match.
-        final double ASPECT_TOLERANCE = 0.001;
+        final double ASPECT_TOLERANCE = (sToleranceMultiplier * 0.001);
         if (sizes == null) return null;
 
         Size optimalSize = null;

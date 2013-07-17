@@ -34,4 +34,6 @@
     <bool name="noFaceDetectOnFrontCamera">false</bool>
     <!-- Use ZSL mode for Qualcomm cameras -->
     <bool name="enableZSL">false</bool>
+    <!-- Adjust the aspect tolerance through a multiplier. Default: 1 -->
+    <integer name="aspectToleranceMultiplier">1</integer>
 </resources>
